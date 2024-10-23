@@ -1,0 +1,78 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+# User type
+type User {
+  id: ID!
+  email: String!
+  password: String!
+  fullName: String!
+  phoneNumber: String
+  createdAt: String!
+}
+
+# Stock type
+type Stock {
+  id: ID!
+  ticker: String!
+  name: String!
+  currentPrice: Float!
+}
+
+# Transaction type
+type Transaction {
+  id: ID!
+  stock: Stock!
+  transactionType: String!
+  quantity: Int!
+  pricePerStock: Float!
+  transactionDate: String!
+}
+
+# Portfolio type
+type Portfolio {
+  stock: Stock!
+  quantity: Int!
+  averagePrice: Float!
+  unrealizedProfitLoss: Float!  # Calculated field
+}
+
+# Queries to fetch user, stocks, portfolio, and profit/loss details
+type Query {
+  # Users Queries
+  getUser(id: ID!): User!
+  listUsers: [User!]!
+
+  # Stock and Portfolio Queries
+  listStocks: [Stock!]!
+  getPortfolio(userId: ID!): [Portfolio!]!
+  getTransactions(userId: ID!): [Transaction!]!
+  getUnrealizedProfitLoss(userId: ID!): Float!
+  getRealizedProfitLoss(userId: ID!): Float!
+}
+
+# Input types for creating or updating users and transactions
+input CreateUserInput {
+  email: String!
+  password: String!
+  fullName: String!
+  phoneNumber: String
+}
+
+input StockTransactionInput {
+  stockId: ID!
+  quantity: Int!
+  pricePerStock: Float!
+}
+
+# Mutations for creating users and managing stock transactions
+type Mutation {
+  # User mutations
+  createUser(input: CreateUserInput!): User!
+
+  # Stock transaction mutations
+  buyStock(input: StockTransactionInput!): Transaction!
+  sellStock(input: StockTransactionInput!): Transaction!
+}
+
