@@ -7,7 +7,8 @@ import (
 
 type Config struct {
 	Server struct {
-		Port string `env:"SERVER_PORT"`
+		Port  string `env:"SERVER_PORT"`
+		GoEnv string `env:"GO_ENV"`
 	}
 	Database struct {
 		URI                  string        `env:"DATABASE_URI"`
@@ -31,6 +32,10 @@ func ProvideConfig() (*Config, error) {
 func validateConfig(cfg *Config) error {
 	if cfg.Server.Port == "" {
 		cfg.Server.Port = ":8080"
+	}
+
+	if cfg.Server.GoEnv == "" {
+		cfg.Server.GoEnv = "development"
 	}
 
 	if cfg.Database.URI == "" {
